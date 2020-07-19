@@ -50,7 +50,7 @@ ChestUnique = {
 		-- For use of the script
 		keyAction = 4055,
 		itemReward = 2088,
-		storage = Storage.Quest.Panpipe.Key4055Reward
+		storage = Storage.Quest.Panpipe.Key4055
 	},
 	-- Dawnport quest key 0010 chest
 	[5002] = {
@@ -61,6 +61,26 @@ ChestUnique = {
 		keyAction = 103,
 		itemReward = 23763,
 		storage = Storage.Quest.Dawnport.Key0010
+	},
+	-- Emperor's cookies quest key 3800
+	[5003] = {
+		-- For use of the map
+		itemId = 1740,
+		itemPos = {x = 32605, y = 31908, z = 3},
+		-- For use of the script
+		keyAction = 3800,
+		itemReward = 2089,
+		storage = Storage.Quest.EmperorsCookies.Key3800
+	},
+	-- Emperor's cookies quest key 3802
+	[5004] = {
+		-- For use of the map
+		itemId = 1740,
+		itemPos = {x = 32599, y = 31923, z = 6},
+		-- For use of the script
+		keyAction = 3802,
+		itemReward = 2089,
+		storage = Storage.Quest.EmperorsCookies.Key3802
 	},
 
 	-- Rewards without a container (commom reward), it is only received by the player, are the common rewards
@@ -163,6 +183,174 @@ ChestUnique = {
 		itemReward = {{2430, 1}},
 		storage = Storage.Quest.DeeperFibula.RewardKnightAxe
 	},
+	-- Short sword quest
+	-- Book
+	[6013] = {
+		itemId = 1740,
+		itemPos = {x = 32171, y = 32197, z = 7},
+		itemReward = {{1955, 1}},
+		storage = Storage.Quest.ShortSword.Book
+	},
+	-- Thais lighthouse quest
+	-- Battle hammer
+	[6014] = {
+		itemId = 1740,
+		itemPos = {x = 32225, y = 32265, z = 10},
+		itemReward = {{2417, 1}},
+		storage = Storage.Quest.ThaisLighthouse.BattleHammer
+	},
+	-- Dark shield
+	[6015] = {
+		itemId = 1740,
+		itemPos = {x = 32226, y = 32265, z = 10},
+		itemReward = {{2521, 1}},
+		storage = Storage.Quest.ThaisLighthouse.DarkShield
+	},
+	-- Studded shield quest (rookgaard)
+	-- Banana free account area
+	[6016] = {
+		itemId = 2725,
+		itemPos = {x = 32172, y = 32169, z = 7},
+		itemReward = {{2676, 1}},
+		storage = Storage.Quest.StuddedShield.BananaFree
+	},
+	-- Banana premium account area
+	[6017] = {
+		itemId = 2725,
+		itemPos = {x = 31983, y = 32193, z = 5},
+		itemReward = {{2676, 1}},
+		storage = Storage.Quest.StuddedShield.BananaPremium
+	},
+	-- Rope (kazordoon, emperor's cookies quest)
+	[6018] = {
+		itemId = 1740,
+		itemPos = {x = 32604, y = 31908, z = 3},
+		itemReward = {{2120, 1}},
+		storage = Storage.Quest.EmperorsCookies.RopeReward
+	},
+	-- Explorer brooch quest (kazordoon)
+	[6019] = {
+		itemId = 3058,
+		itemPos = {x = 32636, y = 31873, z = 10},
+		itemReward = {{4873, 1}},
+		storage = Storage.Quest.ExplorerBrooch.Reward
+	},
+	-- Orc fortress quest
+	-- Knight axe
+	[6020] = {
+		itemId = 1738,
+		itemPos = {x = 32980, y = 31727, z = 9},
+		itemReward = {{2430, 1}},
+		storage = Storage.Quest.OrcFortress.KnightAxe
+	},
+	-- Knight armor
+	[6021] = {
+		itemId = 1738,
+		itemPos = {x = 32981, y = 31727, z = 9},
+		itemReward = {{2476, 1}},
+		storage = Storage.Quest.OrcFortress.KnightArmor
+	},
+	-- Fire sword
+	[6022] = {
+		itemId = 1738,
+		itemPos = {x = 32985, y = 31727, z = 9},
+		itemReward = {{2392, 1}},
+		storage = Storage.Quest.OrcFortress.FireSword
+	},
+	-- Draconia quest
+	[6023] = {
+		itemId = 1740,
+		itemPos = {x = 32803, y = 31582, z = 2},
+		itemReward = {{2396, 1}, {2409, 1}},
+		storage = Storage.Quest.Draconia.Reward1
+	},
+	[6024] = {
+		itemId = 1740,
+		itemPos = {x = 32804, y = 31582, z = 2},
+		itemReward = {{2197, 5}, {2167, 1}},
+		storage = Storage.Quest.Draconia.Reward2
+	},
+	-- Adorned UH rune quest
+	[6025] = {
+		itemId = 1738,
+		itemPos = {x = 33136, y = 31601, z = 15},
+		itemReward = {{12559, 1}},
+		storage = Storage.Quest.AdornedUHRune.Reward
+	},
+	-- Barbarian axe quest
+	-- Barbarian axe
+	[6026] = {
+		itemId = 1738,
+		itemPos = {x = 33184, y = 31945, z = 11},
+		itemReward = {{2429, 1}},
+		storage = Storage.Quest.BarbarianAxe.BarbarianAxe
+	},
+	-- Scimitar
+	[6027] = {
+		itemId = 1738,
+		itemPos = {x = 33185, y = 31945, z = 11},
+		itemReward = {{2419, 1}},
+		storage = Storage.Quest.BarbarianAxe.Scimitar
+	},
+	-- Dark armor quest
+	[6028] = {
+		itemId = 3128,
+		itemPos = {x = 33178, y = 31870, z = 12},
+		itemReward = {{2489, 1}},
+		storage = Storage.Quest.DarkArmor.Reward
+	},
+	-- Demon helmet quest
+	-- Steel boots
+	[6029] = {
+		itemId = 1740,
+		itemPos = {x = 33313, y = 31574, z = 15},
+		itemReward = {{2645, 1}},
+		storage = Storage.Quest.DemonHelmet.SteelBoots
+	},
+	-- Demon helmet
+	[6030] = {
+		itemId = 1740,
+		itemPos = {x = 33313, y = 31575, z = 15},
+		itemReward = {{2493, 1}},
+		storage = Storage.Quest.DemonHelmet.DemonHelmet
+	},
+	-- Demon shield
+	[6031] = {
+		itemId = 1740,
+		itemPos = {x = 33313, y = 31576, z = 15},
+		itemReward = {{2520, 1}},
+		storage = Storage.Quest.DemonHelmet.DemonShield
+	},
+	-- Double hero quest
+	-- Red gem
+	[6032] = {
+		itemId = 1738,
+		itemPos = {x = 33109, y = 31679, z = 13},
+		itemReward = {{2156, 1}},
+		storage = Storage.Quest.DoubleHero.RedGem
+	},
+	-- Club ring
+	[6033] = {
+		itemId = 1738,
+		itemPos = {x = 33110, y = 31679, z = 13},
+		itemReward = {{2209, 1}},
+		storage = Storage.Quest.DoubleHero.ClubRing
+	},
+	-- Edron goblin quest
+	-- Silver amulet
+	[6034] = {
+		itemId = 1738,
+		itemPos = {x = 33095, y = 31800, z = 10},
+		itemReward = {{2170, 200}},
+		storage = Storage.Quest.EdronGoblin.SilverAmulet
+	},
+	-- Steel shield
+	[6035] = {
+		itemId = 1738,
+		itemPos = {x = 33095, y = 31801, z = 10},
+		itemReward = {{2509, 1}},
+		storage = Storage.Quest.EdronGoblin.SteelShield
+	},
 
 	-- Reward inside of container, there is also the option to put a key inside
 	-- If the table has a variable for key, (keyItem and keyAction) then it is inside the bag
@@ -186,6 +374,32 @@ ChestUnique = {
 		itemReward = {{2071, 1}, {2175, 1}, {2199, 1}, {2152, 5} , {2169, 1}},
 		weight = 44,
 		storage = Storage.Quest.OrnamentedShield.RedBag
+	},
+	[10003] = {
+		itemId = 1740,
+		itemPos = {x = 32648, y = 31905, z = 3},
+		itemBag = 1987,
+		keyItem = 2089,
+		keyAction = 3801,
+		itemReward = {{2687, 20}, {2687, 7}},
+		weight = 44,
+		storage = Storage.Quest.EmperorsCookies.Key3801
+	},
+	[10004] = {
+		itemId = 1740,
+		itemPos = {x = 32644, y = 32131, z = 8},
+		itemBag = 1987,
+		itemReward = {{2150, 2}, {2166, 1}, {2074, 1}},
+		weight = 44,
+		storage = Storage.Quest.Panpipe.Reward
+	},
+	[10005] = {
+		itemId = 1738,
+		itemPos = {x = 33199, y = 31923, z = 11},
+		itemBag = 1987,
+		itemReward = {{2148, 98}, {2148, 77}, {2143, 3}},
+		weight = 27,
+		storage = Storage.Quest.BerserkerTreasure.Reward
 	},
 
 	-- Reward of others scrips files (varied rewards)
@@ -290,6 +504,7 @@ ChestUnique = {
 		itemPos = {x = 31938, y = 32837, z = 7}
 	},
 	-- Dawnport vocation rewards
+	-- Path: data\scripts\actions\quests\dawnport\vocation_reward.lua
 	-- Sorcerer
 	[14025] = {
 		itemId = 1740,

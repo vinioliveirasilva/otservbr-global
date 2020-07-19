@@ -45,6 +45,7 @@ enum stackPosType_t {
 	STACKPOS_TOPDOWN_ITEM,
 	STACKPOS_USEITEM,
 	STACKPOS_USETARGET,
+  	STACKPOS_FIND_THING,
 };
 
 enum WorldType_t {
@@ -98,6 +99,7 @@ class Game
 
 		bool loadMainMap(const std::string& filename);
 		void loadMap(const std::string& path);
+		bool loadCustomSpawnFile(const std::string& fileName);
 
 		/**
 		  * Get the map size - info purpose only
