@@ -79,6 +79,7 @@ void House::setOwner(uint32_t guid, bool updateDatabase/* = true*/, Player* play
 
 		//clean access lists
 		owner = 0;
+		ownerAccountId = 0;
 		setAccessList(SUBOWNER_LIST, "");
 		setAccessList(GUEST_LIST, "");
 
@@ -106,10 +107,20 @@ void House::setOwner(uint32_t guid, bool updateDatabase/* = true*/, Player* play
 	rentWarnings = 0;
 
 	if (guid != 0) {
-		std::string name = IOLoginData::getNameByGuid(guid);
+
+		Database& db = Database::getInstance();
+		std::ostringstream query;
+		query << "SELECT `name`, `account_id` FROM `players` WHERE `id` = " << guid;
+		DBResult_ptr result = db.storeQuery(query.str());
+		if (!result) {
+			return;
+		}
+		
+		std::string name = result->getString("name");
 		if (!name.empty()) {
 			owner = guid;
 			ownerName = name;
+			ownerAccountId =  result->getNumber<uint32_t>("account_id");
 		}
 	}
 
@@ -141,6 +152,12 @@ AccessHouseLevel_t House::getHouseAccessLevel(const Player* player)
 		return HOUSE_OWNER;
 	}
 
+	if (g_config.getBoolean(ConfigManager::HOUSE_OWNED_BY_ACCOUNT)) {
+		if (ownerAccountId == player->getAccount()) {
+			return HOUSE_OWNER;
+		}
+	}
+	
 	if (player->hasFlag(PlayerFlag_CanEditHouses)) {
 		return HOUSE_OWNER;
 	}
@@ -460,6 +477,7 @@ void AccessList::parseList(const std::string& list)
 {
 	playerList.clear();
 	guildRankList.clear();
+	allowEveryone = false;
 	this->list = list;
 	if (list.empty()) {
 		return;
@@ -485,6 +503,8 @@ void AccessList::parseList(const std::string& list)
 			} else {
 				addGuildRank(line.substr(0, at_pos - 1), line.substr(at_pos + 1));
 			}
+		} else if (line == "*") {
+			allowEveryone = true;
 		} else if (line.find_first_of("!*?") != std::string::npos) {
 			// Remove regular expressions since they don't make much sense in houses
 			continue;
@@ -549,6 +569,10 @@ void AccessList::addGuildRank(const std::string& name, const std::string& guildN
 
 bool AccessList::isInList(const Player* player)
 {
+	if (allowEveryone) {
+		return true;
+	}
+
 	auto playerIt = playerList.find(player->getGUID());
 	if (playerIt != playerList.end()) {
 		return true;

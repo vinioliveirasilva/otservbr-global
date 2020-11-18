@@ -47,6 +47,7 @@ class AccessList
 		std::string list;
 		std::unordered_set<uint32_t> playerList;
 		std::unordered_set<uint32_t> guildRankList;
+		bool allowEveryone = false;
 };
 
 class Door final : public Item
@@ -244,6 +245,7 @@ class House
 
 		uint32_t id;
 		uint32_t owner = 0;
+		uint32_t ownerAccountId = 0;
 		uint32_t rentWarnings = 0;
 		uint32_t rent = 0;
 		uint32_t townId = 0;

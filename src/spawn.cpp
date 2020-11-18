@@ -28,7 +28,6 @@
 #include "pugicast.h"
 #include "events.h"
 
-extern Events* g_events;
 extern ConfigManager g_config;
 extern Monsters g_monsters;
 extern Game g_game;
@@ -51,6 +50,17 @@ bool Spawns::loadFromXml(const std::string& fromFilename)
 
 	this->filename = fromFilename;
 	loaded = true;
+
+	uint32_t eventschedule = g_game.getSpawnSchedule();
+	Database& db = Database::getInstance();
+	std::ostringstream query;
+	query << "SELECT `boostname` FROM `boosted_creature`";
+	DBResult_ptr BoostedName = db.storeQuery(query.str());
+	std::string BoostedNameGet = BoostedName->getString("boostname");
+
+	if (!BoostedName) {
+		std::cout << "[Warning - Boosted creature] Failed to detect boosted creature database." << std::endl;
+	}
 
 	for (auto spawnNode : doc.child("spawns").children()) {
 		Position centerPos(
@@ -91,7 +101,16 @@ bool Spawns::loadFromXml(const std::string& fromFilename)
 					centerPos.y + pugi::cast<uint16_t>(childNode.attribute("y").value()),
 					centerPos.z
 				);
-				uint32_t interval = pugi::cast<uint32_t>(childNode.attribute("spawntime").value()) * 1000 / g_config.getNumber(ConfigManager::RATE_SPAWN);
+				
+				int32_t boostedrate;
+				
+				if (nameAttribute.value() == BoostedNameGet) {
+					boostedrate = 2;
+				} else {
+					boostedrate = 1;
+				}
+				
+				uint32_t interval = pugi::cast<uint32_t>(childNode.attribute("spawntime").value()) * 100000 / (g_config.getNumber(ConfigManager::RATE_SPAWN) * boostedrate * eventschedule);
 				if (interval > MINSPAWN_INTERVAL) {
 					spawn.addMonster(nameAttribute.as_string(), pos, dir, interval);
 				} else {
@@ -139,6 +158,17 @@ bool Spawns::loadCustomSpawnXml(const std::string& _filename)
 		return false;
 	}
 
+	uint32_t eventschedule = g_game.getSpawnSchedule();
+	Database& db = Database::getInstance();
+	std::ostringstream query;
+	query << "SELECT `boostname` FROM `boosted_creature`";
+	DBResult_ptr BoostedName = db.storeQuery(query.str());
+	std::string BoostedNameGet = BoostedName->getString("boostname");
+
+	if (!BoostedName) {
+		std::cout << "[Warning - Boosted creature] Failed to detect boosted creature database." << std::endl;
+	}
+	
 	for (pugi::xml_node spawnNode = doc.child("spawns").first_child(); spawnNode; spawnNode = spawnNode.next_sibling()) {
 		Position centerPos(
 			pugi::cast<uint16_t>(spawnNode.attribute("centerx").value()),
@@ -180,8 +210,16 @@ bool Spawns::loadCustomSpawnXml(const std::string& _filename)
 					centerPos.y + pugi::cast<uint16_t>(childNode.attribute("y").value()),
 					centerPos.z
 					);
+				
+				int32_t boostedrate;
+				
+				if (nameAttribute.value() == BoostedNameGet) {
+					boostedrate = 2;
+				} else {
+					boostedrate = 1;
+				}			
 
-				uint32_t interval = pugi::cast<uint32_t>(childNode.attribute("spawntime").value()) * 1000;
+				uint32_t interval = pugi::cast<uint32_t>(childNode.attribute("spawntime").value()) * 100000 / (g_config.getNumber(ConfigManager::RATE_SPAWN) * boostedrate * eventschedule);
 				if (interval > MINSPAWN_INTERVAL) {
 					spawn.addMonster(nameAttribute.as_string(), pos, dir, interval);
 				} else {

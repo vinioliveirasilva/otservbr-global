@@ -50,8 +50,10 @@ class ConfigManager
 			SERVER_SAVE_CLOSE,
 			SERVER_SAVE_SHUTDOWN,
 			FORCE_MONSTERTYPE_LOAD,
+			HOUSE_OWNED_BY_ACCOUNT,
 			STOREMODULES,
 			ALLOW_BLOCK_SPAWN,
+      ONLY_INVITED_CAN_MOVE_HOUSE_ITEMS,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
@@ -126,6 +128,7 @@ class ConfigManager
 			SERVER_SAVE_NOTIFY_DURATION,
 			PUSH_DELAY,
 			PUSH_DISTANCE_DELAY,
+			STASH_ITEMS,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};

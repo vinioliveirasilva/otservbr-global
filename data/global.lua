@@ -9,6 +9,11 @@ STORAGEVALUE_PROMOTION = 30018
 
 SERVER_NAME = configManager.getString(configKeys.SERVER_NAME)
 
+-- Event Schedule
+SCHEDULE_LOOT_RATE = 100
+SCHEDULE_EXP_RATE = 100
+SCHEDULE_SKILL_RATE = 100
+
 -- MARRY
 PROPOSED_STATUS = 1
 MARRIED_STATUS = 2
@@ -16,6 +21,10 @@ PROPACCEPT_STATUS = 3
 LOOK_MARRIAGE_DESCR = TRUE
 ITEM_WEDDING_RING = 2121
 ITEM_ENGRAVED_WEDDING_RING = 10502
+
+-- Scarlett Etzel
+SCARLETT_MAY_TRANSFORM = 0
+SCARLETT_MAY_DIE = 0
 
 ropeSpots = {384, 418, 8278, 8592, 13189, 14436, 15635, 19518, 26019, 24621, 24622, 24623, 24624}
 specialRopeSpots = { 14435 }
@@ -65,6 +74,23 @@ startupGlobalStorages = {
 	GlobalStorage.FerumbrasAscendant.Elements.Done
 }
 
+do -- Event Schedule rates
+	local lootRate = Game.getEventSLoot()
+	if lootRate ~= 100 then
+		SCHEDULE_LOOT_RATE = lootRate
+	end
+
+	local expRate = Game.getEventSExp()
+	if expRate ~= 100 then
+		SCHEDULE_EXP_RATE = expRate
+	end
+
+	local skillRate = Game.getEventSSkill()
+	if skillRate ~= 100 then
+		SCHEDULE_SKILL_RATE = skillRate
+	end
+end
+
 table.contains = function(array, value)
 	for _, targetColumn in pairs(array) do
 		if targetColumn == value then
@@ -113,4 +139,9 @@ end
 
 if nextDelayPreyReroll == nil then
 	nextDelayPreyReroll = {}
+end
+
+-- Delay potion
+if not playerDelayPotion then
+	playerDelayPotion = {}
 end

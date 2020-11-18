@@ -245,7 +245,7 @@ class Tile : public Cylinder
 				uint32_t flags, Creature* actor = nullptr) const override;
 		ReturnValue queryMaxCount(int32_t index, const Thing& thing, uint32_t count,
 				uint32_t& maxQueryCount, uint32_t flags) const override final;
-		ReturnValue queryRemove(const Thing& thing, uint32_t count, uint32_t flags) const override final;
+		ReturnValue queryRemove(const Thing& thing, uint32_t count, uint32_t tileFlags, Creature* actor = nullptr) const override;
 		Tile* queryDestination(int32_t& index, const Thing& thing, Item** destItem, uint32_t& flags) override;
 
 		void addThing(Thing* thing) override final;
@@ -267,8 +267,8 @@ class Tile : public Cylinder
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override final;
 		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override final;
 
-		void internalAddThing(Thing* thing) override final;
-		void internalAddThing(uint32_t index, Thing* thing) override;
+		void internalAddThing(Thing* thing) override;
+		void virtual internalAddThing(uint32_t index, Thing* thing) override;
 
 		const Position& getPosition() const override final {
 			return tilePos;
@@ -279,7 +279,7 @@ class Tile : public Cylinder
 		}
 
 		Item* getUseItem(int32_t index) const;
-    	Item* getDoorItem() const;
+		Item* getDoorItem() const;
 
 		Item* getGround() const {
 			return ground;

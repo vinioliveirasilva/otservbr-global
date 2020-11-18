@@ -94,6 +94,7 @@ enum itemAttrTypes : uint32_t {
 	ITEM_ATTRIBUTE_SPECIAL = 1 << 23,
 	ITEM_ATTRIBUTE_IMBUINGSLOTS = 1 << 24,
 	ITEM_ATTRIBUTE_OPENCONTAINER = 1 << 25,
+	ITEM_ATTRIBUTE_QUICKLOOTCONTAINER = 1 << 26,
 	ITEM_ATTRIBUTE_CUSTOM = 1U << 31
 };
 
@@ -146,6 +147,7 @@ enum OperatingSystem_t : uint8_t {
 	CLIENTOS_WINDOWS = 2,
 	CLIENTOS_FLASH = 3,
 	CLIENTOS_NEW_WINDOWS = 5,
+	CLIENTOS_NEW_MAC = 6,
 
 	CLIENTOS_OTCLIENT_LINUX = 10,
 	CLIENTOS_OTCLIENT_WINDOWS = 11,
@@ -500,6 +502,16 @@ enum SpeechBubble_t
 	SPEECHBUBBLE_QUESTTRADER = 4,
 };
 
+enum RespawnPeriod_t {
+	RESPAWNPERIOD_ALL,
+	RESPAWNPERIOD_DAY,
+	RESPAWNPERIOD_NIGHT
+};
+
+/**
+ * @Deprecated
+ * It will be dropped with monsters. Use RespawnPeriod_t instead.
+ */
 enum SpawnType_t
 {
 	RESPAWN_IN_ALL = 0,
@@ -533,6 +545,47 @@ enum MapMark_t
 	MAPMARK_GREENSOUTH = 19,
 };
 
+enum QuickLootFilter_t
+{
+	QUICKLOOTFILTER_SKIPPEDLOOT = 0,
+	QUICKLOOTFILTER_ACCEPTEDLOOT = 1,
+};
+
+enum ObjectCategory_t
+{
+	OBJECTCATEGORY_NONE = 0,
+	OBJECTCATEGORY_ARMORS = 1,
+	OBJECTCATEGORY_NECKLACES = 2,
+	OBJECTCATEGORY_BOOTS = 3,
+	OBJECTCATEGORY_CONTAINERS = 4,
+	OBJECTCATEGORY_DECORATION = 5,
+	OBJECTCATEGORY_FOOD = 6,
+	OBJECTCATEGORY_HELMETS = 7,
+	OBJECTCATEGORY_LEGS = 8,
+	OBJECTCATEGORY_OTHERS = 9,
+	OBJECTCATEGORY_POTIONS = 10,
+	OBJECTCATEGORY_RINGS = 11,
+	OBJECTCATEGORY_RUNES = 12,
+	OBJECTCATEGORY_SHIELDS = 13,
+	OBJECTCATEGORY_TOOLS = 14,
+	OBJECTCATEGORY_VALUABLES = 15,
+	OBJECTCATEGORY_AMMO = 16,
+	OBJECTCATEGORY_AXES = 17,
+	OBJECTCATEGORY_CLUBS = 18,
+	OBJECTCATEGORY_DISTANCEWEAPONS = 19,
+	OBJECTCATEGORY_SWORDS = 20,
+	OBJECTCATEGORY_WANDS = 21,
+	OBJECTCATEGORY_PREMIUMSCROLLS = 22, // not used in quickloot
+	OBJECTCATEGORY_TIBIACOINS = 23, // not used in quickloot
+	OBJECTCATEGORY_CREATUREPRODUCTS = 24,
+	OBJECTCATEGORY_STASHRETRIEVE = 27,
+	OBJECTCATEGORY_GOLD = 30,
+	OBJECTCATEGORY_DEFAULT = 31, // unassigned loot
+
+	OBJECTCATEGORY_FIRST = OBJECTCATEGORY_ARMORS,
+	OBJECTCATEGORY_LAST = OBJECTCATEGORY_DEFAULT,
+};
+
 struct Outfit_t {
 	uint16_t lookType = 0;
 	uint16_t lookTypeEx = 0;
@@ -544,11 +597,23 @@ struct Outfit_t {
 	uint8_t lookAddons = 0;
 };
 
+enum LightState_t {
+	LIGHT_STATE_DAY,
+	LIGHT_STATE_NIGHT,
+	LIGHT_STATE_SUNSET,
+	LIGHT_STATE_SUNRISE,
+};
+
 struct LightInfo {
 	uint8_t level = 0;
 	uint8_t color = 0;
 	constexpr LightInfo() = default;
 	constexpr LightInfo(uint8_t newLevel, uint8_t newColor) : level(newLevel), color(newColor) {}
+};
+
+struct RespawnType {
+	RespawnPeriod_t period;
+	bool underground;
 };
 
 struct ShopInfo {
@@ -660,9 +725,10 @@ struct CombatDamage
 	}
 };
 
+using StashItemList = std::map<uint16_t, uint32_t>;
 using MarketOfferList = std::list<MarketOffer>;
 using HistoryMarketOfferList = std::list<HistoryMarketOffer>;
-using ShopInfoList = std::list<ShopInfo>;
+using ShopInfoList = std::vector<ShopInfo>;
 
 enum MonstersEvent_t : uint8_t {
 	MONSTERS_EVENT_NONE = 0,
@@ -671,6 +737,26 @@ enum MonstersEvent_t : uint8_t {
 	MONSTERS_EVENT_DISAPPEAR = 3,
 	MONSTERS_EVENT_MOVE = 4,
 	MONSTERS_EVENT_SAY = 5,
+};
+
+enum Supply_Stash_Actions_t : uint8_t {
+	SUPPLY_STASH_ACTION_STOW_ITEM = 0,
+	SUPPLY_STASH_ACTION_STOW_CONTAINER = 1,
+	SUPPLY_STASH_ACTION_STOW_STACK = 2,
+	SUPPLY_STASH_ACTION_WITHDRAW = 3
+};
+
+enum Daily_Reward_Bonus : uint8_t {
+	DAILY_REWARD_FIRST = 2,
+
+	DAILY_REWARD_HP_REGENERATION = 2,
+	DAILY_REWARD_MP_REGENERATION = 3,
+	DAILY_REWARD_STAMINA_REGENERATION = 4,
+	DAILY_REWARD_DOUBLE_HP_REGENERATION = 5,
+	DAILY_REWARD_DOUBLE_MP_REGENERATION = 6,
+	DAILY_REWARD_SOUL_REGENERATION = 7,
+
+	DAILY_REWARD_LAST = 7,
 };
 
 enum Resource_t : uint8_t
@@ -687,6 +773,73 @@ enum MagicEffectsType_t : uint8_t {
   MAGIC_EFFECTS_CREATE_EFFECT = 3,//needs uint8_t effectid after type
   MAGIC_EFFECTS_CREATE_DISTANCEEFFECT = 4,//needs uint8_t and deltaX(int8_t), deltaY(int8_t) after type
   MAGIC_EFFECTS_CREATE_DISTANCEEFFECT_REVERSED = 5,//needs uint8_t and deltaX(int8_t), deltaY(int8_t) after type
+};
+
+enum InspectObjectTypes : uint8_t {
+	INSPECT_NORMALOBJECT = 0,
+	INSPECT_NPCTRADE = 1,
+	INSPECT_UNKNOWN = 2,
+	INSPECT_CYCLOPEDIA = 3
+};
+
+enum CyclopediaCharacterInfoType_t : uint8_t {
+	CYCLOPEDIA_CHARACTERINFO_BASEINFORMATION = 0,
+	CYCLOPEDIA_CHARACTERINFO_GENERALSTATS = 1,
+	CYCLOPEDIA_CHARACTERINFO_COMBATSTATS = 2,
+	CYCLOPEDIA_CHARACTERINFO_RECENTDEATHS = 3,
+	CYCLOPEDIA_CHARACTERINFO_RECENTPVPKILLS = 4,
+	CYCLOPEDIA_CHARACTERINFO_ACHIEVEMENTS = 5,
+	CYCLOPEDIA_CHARACTERINFO_ITEMSUMMARY = 6,
+	CYCLOPEDIA_CHARACTERINFO_OUTFITSMOUNTS = 7,
+	CYCLOPEDIA_CHARACTERINFO_STORESUMMARY = 8,
+	CYCLOPEDIA_CHARACTERINFO_INSPECTION = 9,
+	CYCLOPEDIA_CHARACTERINFO_BADGES = 10,
+	CYCLOPEDIA_CHARACTERINFO_TITLES = 11
+};
+
+enum CyclopediaCharacterInfo_OutfitType_t : uint8_t {
+	CYCLOPEDIA_CHARACTERINFO_OUTFITTYPE_NONE = 0,
+	CYCLOPEDIA_CHARACTERINFO_OUTFITTYPE_QUEST = 1,
+	CYCLOPEDIA_CHARACTERINFO_OUTFITTYPE_STORE = 2
+};
+
+enum HighscoreType_t : uint8_t {
+	HIGHSCORE_GETENTRIES = 0,
+	HIGHSCORE_OURRANK = 1
+};
+
+enum HighscoreCategories_t : uint8_t {
+	HIGHSCORE_CATEGORY_EXPERIENCE = 0,
+	HIGHSCORE_CATEGORY_FIST_FIGHTING,
+	HIGHSCORE_CATEGORY_CLUB_FIGHTING,
+	HIGHSCORE_CATEGORY_SWORD_FIGHTING,
+	HIGHSCORE_CATEGORY_AXE_FIGHTING,
+	HIGHSCORE_CATEGORY_DISTANCE_FIGHTING,
+	HIGHSCORE_CATEGORY_SHIELDING,
+	HIGHSCORE_CATEGORY_FISHING,
+	HIGHSCORE_CATEGORY_MAGIC_LEVEL
+};
+
+struct HighscoreCategory
+{
+	HighscoreCategory(const char* name, uint8_t id) :
+		name(name), id(id) {}
+
+	const char* name;
+	uint8_t id;
+};
+
+struct HighscoreCharacter
+{
+	HighscoreCharacter(std::string name, uint64_t points, uint32_t id, uint32_t rank, uint16_t level, uint8_t vocation) :
+		name(std::move(name)), points(points), id(id), rank(rank), level(level), vocation(vocation) {}
+
+	std::string name;
+	uint64_t points;
+	uint32_t id;
+	uint32_t rank;
+	uint16_t level;
+	uint8_t vocation;
 };
 
 #endif
